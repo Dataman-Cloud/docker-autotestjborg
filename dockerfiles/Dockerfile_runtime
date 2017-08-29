@@ -1,0 +1,7 @@
+FROM demoregistry.dataman-inc.com/library/pybot
+
+COPY BORSP_api /BORSP_api
+
+WORKDIR /BORSP_api
+
+CMD ["pybot", "--include", "app", "valid_app_manage.txt"]

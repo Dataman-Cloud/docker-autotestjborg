@@ -1,0 +1,66 @@
+*** Settings ***
+Suite Setup	GetHeaders
+Suite Teardown  Delete All Sessions
+Library         Collections
+Library         String
+Library         OperatingSystem
+Library         RequestsLibrary
+Library         Collections
+Library         XML
+Library         json
+Library         SSHLibrary
+Resource        config.txt
+
+*** Test Cases ***
+应用管理-获取应用列表
+    [Tags]  应用管理	app	AppList
+    Create Session	shurenyun	${SERVER}	headers=${headers}
+    ${resp}=  Get Request	shurenyun	/sgcloud/v1/apps
+    log  ${resp.text}
+    Should Be Equal As Strings  ${resp.status_code}  200
+
+应用管理-创建应用	
+    [Tags]	应用管理	app	CreateApp
+#    Create Session	shurenyun	${SERVER}	headers=${headers}
+    ${name} =	GetRandomstring 
+    ${appname} =  Evaluate	'apitest' + '${name}'
+    Set Global Variable	${appname}
+    ${appid} =	Evaluate	'${appname}.default.admin.${cluster_name}'
+    Set Global Variable	${appid}
+    ${appjson}=  Get Binary File	${CURDIR}${/}json/create_app.json
+    ${data} =  Replace Variables	${appjson}
+    ${resp}=  Post Request	shurenyun	/sgcloud/v1/apps?${query_params}  data=${data}
+    Log	${resp.text}
+    Should Be Equal As Strings	${resp.status_code}	200
+
+应用管理-获取指定应用的信息
+    [Tags]  应用管理  app	GetApp
+    ${path}=  Evaluate  '/sgcloud/v1/apps/'+'${appid}'+'?${query_params}'
+    ${resp}=  Get Request  shurenyun  ${path}
+    Log  ${resp.text}
+    Should Be Equal As Strings  ${resp.status_code}  200
+
+应用管理-获取应用容器列表
+    [Tags]  应用管理  app	GetAppTasks
+    Sleep  10
+    ${path}=  Evaluate  '/sgcloud/v1/apps/'+'${appid}'+'/tasks'
+    ${resp}=  Get Request  shurenyun  ${path}
+    Log  ${resp.text}
+    Should Be Equal As Strings  ${resp.status_code}  200
+
+应用管理-更新指定应用的信息
+    [Tags]  应用管理  app       UpdateApp
+    ${appjson}=  Get Binary File        ${CURDIR}${/}json/update_app.json
+    ${data} =  Replace Variables        ${appjson}
+    ${path}=  Evaluate  '/sgcloud/v1/apps/'+'${appid}'+'?${query_params}'
+    ${resp}=  Put Request  shurenyun  ${path}	  data=${data}
+    Log  ${resp.text}
+    Should Be Equal As Strings  ${resp.status_code}  200
+
+删除指定应用
+    [Tags]  应用管理  app	DeleteApp
+    ${path}=  Evaluate  '/sgcloud/v1/apps/'+'${appid}'+'?${query_params}'
+    ${resp}=  Delete Request  shurenyun  ${path}
+    Log  ${resp.text}
+    Should Be Equal As Strings  ${resp.status_code}  200
+

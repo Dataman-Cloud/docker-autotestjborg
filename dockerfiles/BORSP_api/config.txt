@@ -1,0 +1,20 @@
+*** Settings ***
+Library         random
+
+*** Variables ***
+${SERVER}                     http://192.168.1.214:81   # need to check
+${app_image}                  offlineregistry.dataman-inc.com:5000/library/blackicebird-2048:latest         # deploy app name
+${USERID}			hatest			# userid
+${PROJECTID}			pidhatest		# project id
+${cluster_name}               clusterhatest                      # app_test_user deploy app on this cluster
+${query_params}			userid=${USERID}&projectid=${PROJECTID}&bayname=${cluster_name}
+
+*** Keywords ***
+GetRandomstring
+    ${randomstring} =  Generate Random String  6      [LOWER]
+    # ${randomstring} =  Convert To Lowercase  ${Random}
+    [Return]  ${randomstring}
+
+GetHeaders
+    ${headers}	Create Dictionary	Accept=application/json;charset=utf-8	Content-Type=application/json
+    Set Global Variable	${headers}
