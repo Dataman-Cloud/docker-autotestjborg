@@ -6,7 +6,7 @@
 
 ```
 docker run --rm -i \
-	offlineregistry.dataman-inc.com:5000/library/centos7-docker-autotestjborg:$tag \
+	demoregistry.dataman-inc.com/library/centos7-docker-autotestjborg:$tag \
 	pybot \
 	--variable SERVER:http://192.168.1.214:81 \
 	--variable USERID:autotest \
