@@ -23,7 +23,7 @@ docker run --rm -i \
 	- USERID: 用户id
 	- PROJECTID: 项目id
 	- cluster_name: 集群名称
-	--include app valid_app_manage.txt  测试应用管理，可以替换为其它
+	- --include app valid_app_manage.txt  测试应用管理，可以替换为其它
 
 
 ## 配合offlinesry使用方法(推荐)
