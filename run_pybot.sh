@@ -9,7 +9,7 @@ if [ "$DEBUG" == "true" ];then
         set +e
         docker rm -f autotestborg
         docker run -i --name autotestborg $AUTOTESTBORG_IMAGE $@
-        #docker run -i -v /data/docker-autotestjborg/dockerfiles/BORSP_api:/BORSP_api --name autotestborg $AUTOTESTBORG_IMAGE $@
+        #docker run -i -v `pwd`/dockerfiles/BORSP_api:/BORSP_api --name autotestborg $AUTOTESTBORG_IMAGE $@
         mkdir -p /data/offline-yumrepo/pybot
         rm -f /data/offline-yumrepo/pybot/log.html
         rm -f /data/offline-yumrepo/pybot/report.html

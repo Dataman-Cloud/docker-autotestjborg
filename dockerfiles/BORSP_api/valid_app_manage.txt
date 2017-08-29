@@ -57,7 +57,7 @@ Resource        config.txt
     Log  ${resp.text}
     Should Be Equal As Strings  ${resp.status_code}  200
 
-删除指定应用
+应用管理-删除指定应用
     [Tags]  应用管理  app	DeleteApp
     ${path}=  Evaluate  '/sgcloud/v1/apps/'+'${appid}'+'?${query_params}'
     ${resp}=  Delete Request  shurenyun  ${path}
